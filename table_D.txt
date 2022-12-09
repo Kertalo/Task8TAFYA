@@ -1,0 +1,8 @@
+       |a    |b    |c    
+->(A)  |AB   |-    |C    
+  (AB) |ABC  |-    |C    
+  (C)  |-    |C    |B    
+  (ABC)|ABC  |C    |BC   
+  B    |AC   |-    |-    
+  (BC) |AC   |C    |B    
+  (AC) |AB   |C    |BC   

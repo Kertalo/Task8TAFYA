@@ -86,10 +86,48 @@ def determinization(table)
   new_table
 end
 
-def create_file(file_name)
-  nil
+def create_file(file_name, table)
+  length = 0
+  table[:states].each do |s|
+    if table[:final_states].include? s
+      now_length = s.size + 2
+    else
+      now_length = s.size
+    end
+    if now_length > length
+      length = now_length
+    end
+  end
+
+  out_file = File.new(file_name, "w")
+
+  out_file.print(" " * (length + 2))
+  table[:alphabet].each do |a|
+    out_file.print("|" + a + " " * (length - a.size))
+  end
+
+  out_file.puts ""
+  out_file.print("->")
+
+  table[:states].each_with_index do |s, i|
+    if i != 0
+      out_file.print "  "
+    end
+    if table[:final_states].include? s
+      out_file.print("(" + s + ")" + " " * (length - s.size - 2))
+    else
+      out_file.print(s + " " * (length - s.size))
+    end
+
+    table[:columns][i].each do |c|
+      out_file.print("|" + c + " " * (length - c.size))
+    end
+    out_file.puts ""
+  end
+
+  out_file.close
 end
 
 table = open_file('table_ND.txt')
-puts table
-puts determinization(table)
+new_table = determinization(table)
+create_file('table_D.txt', new_table)
