@@ -1,21 +1,4 @@
-def sort(table, str)
-  if str == nil
-    return "-"
-  end
-  str.squeeze
-  res = ""
-  table[:states].each do |state|
-    if str.include? state
-      res += state
-    end
-  end
-  if res == ""
-    res = "-"
-  end
-  res
-end
-
-def open_file(file_name)
+def open_file(file_name) #открываем файл и заносим таблицу переходов в Hash "table"
   table = { alphabet: [], states: [], final_states: [], columns: [] }
   i = 0
   File.readlines(file_name).each do |line|
@@ -58,7 +41,24 @@ def open_file(file_name)
   table
 end
 
-def determinization(table)
+def sort(table, str) #сортировка нового состояния (пример: С,B,A -> ABC)
+  if str == nil
+    return "-"
+  end
+  str.squeeze
+  res = ""
+  table[:states].each do |state|
+    if str.include? state
+      res += state
+    end
+  end
+  if res == ""
+    res = "-"
+  end
+  res
+end
+
+def determinization(table) #детерминизация
   new_table = { alphabet: table[:alphabet], states: [table[:states][0]], final_states: [], columns: [] }
   new_table[:states].each do |new_state|
     table[:final_states].each do |f|
@@ -86,7 +86,7 @@ def determinization(table)
   new_table
 end
 
-def create_file(file_name, table)
+def create_file(file_name, table) #создаем файл и заносим в него таблицу "table"
   length = 0
   table[:states].each do |s|
     if table[:final_states].include? s
